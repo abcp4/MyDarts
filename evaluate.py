@@ -95,7 +95,7 @@ def main():
         
     input_np = np.random.uniform(0, 1, (1, 64, 64,3))
     input_var = Variable(torch.FloatTensor(input_np))
-    from converter import pytorch_to_keras
+    from pytorch2keras.converter import pytorch_to_keras
     # we should specify shape of the input tensor
     k_model = pytorch_to_keras(model, input_var, [(1, 64, 64,3)], verbose=True)  
     #from pytorch2keras.converter import pytorch_to_keras
