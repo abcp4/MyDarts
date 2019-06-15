@@ -91,7 +91,7 @@ def main():
     
     #load
     if(config.load):
-        model,config.epochs,w_optim,alpha_optim,net_crit = utils.load_checkpoint(model,config.epochs,w_optim,alpha_optim,net_crit,'/content/pt.darts/searchs/custom/checkpoint.pth.tar')
+        model,config.epochs,w_optim,alpha_optim,net_crit = utils.load_checkpoint(model,config.epochs,w_optim,alpha_optim,net_crit,'/content/MyDarts/searchs/custom/checkpoint.pth.tar')
     
     model.cuda() 
     input_np = np.random.uniform(0, 1, (1, 3,64, 64))
