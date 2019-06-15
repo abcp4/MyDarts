@@ -14,6 +14,15 @@ import genotypes
 from torch.autograd import Variable
 import torch.nn.functional as F
 import torch.backends.cudnn as cudnn
+def check_error(output, k_model, input_np, epsilon=1e-5):
+    pytorch_output = output.data.numpy()
+    keras_output = k_model.predict(input_np)
+
+    error = np.max(pytorch_output - keras_output)
+    print('Error:', error)
+
+    assert error < epsilon
+    return error
 
 
 config = SearchConfig()
@@ -94,7 +103,19 @@ def main():
         model,config.epochs,w_optim,alpha_optim,net_crit = utils.load_checkpoint(model,config.epochs,w_optim,alpha_optim,net_crit,'/content/MyDarts/searchs/custom/checkpoint.pth.tar')
    
     dummy_input = Variable(torch.randn(1, 3, 64, 64))
-    torch.onnx.export(model, dummy_input, "rsdarts.onnx", verbose=True)
+    #torch.onnx.export(model, dummy_input, "rsdarts.onnx", verbose=True)
+    input_np = np.random.uniform(0, 1, (1, 3, 64, 64))
+    input_var = Variable(torch.FloatTensor(input_np))
+    from converter import pytorch_to_keras
+    # we should specify shape of the input tensor
+    output = model(input_var)
+    k_model = pytorch_to_keras(model, input_var, (3, 64, 64,), verbose=True)
+
+    error = check_error(output, k_model, input_np)
+    if max_error < error:
+        max_error = error
+
+    print('Max error: {0}'.format(max_error))
     a = 2/0
     lr_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
         w_optim, config.epochs, eta_min=config.w_lr_min)
