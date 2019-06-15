@@ -92,7 +92,10 @@ def main():
     #load
     if(config.load):
         model,config.epochs,w_optim,alpha_optim,net_crit = utils.load_checkpoint(model,config.epochs,w_optim,alpha_optim,net_crit,'/content/MyDarts/searchs/custom/checkpoint.pth.tar')
-    
+   
+    dummy_input = Variable(torch.randn(1, 3, 64, 64))
+    torch.onnx.export(model, dummy_input, "rsdarts.onnx", verbose=True)
+    a = 2/0
     lr_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
         w_optim, config.epochs, eta_min=config.w_lr_min)
     architect = Architect(model, config.w_momentum, config.w_weight_decay)
