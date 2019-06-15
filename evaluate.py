@@ -15,6 +15,16 @@ from torch.autograd import Variable
 import torch.nn.functional as F
 import torch.backends.cudnn as cudnn
 
+def check_error(output, k_model, input_np, epsilon=1e-5):
+    pytorch_output = output.data.numpy()
+    keras_output = k_model.predict(input_np)
+
+    error = np.max(pytorch_output - keras_output)
+    print('Error:', error)
+
+    assert error < epsilon
+return error
+
 
 config = SearchConfig()
 
@@ -96,9 +106,11 @@ def main():
     model.eval() 
     input_np = np.random.uniform(0, 1, (1, 3,64, 64))
     input_var = Variable(torch.FloatTensor(input_np))
+    output = model(input_var)
     from pytorch2keras.converter import pytorch_to_keras
     # we should specify shape of the input tensor
-    k_model = pytorch_to_keras(model, input_var, ( 3,64, 64,), verbose=True)  
+    k_model = pytorch_to_keras(model, input_var, ( 3,64, 64,), verbose=True) 
+    error = check_error(output, k_model, input_np)
     #from pytorch2keras.converter import pytorch_to_keras
     # we should specify shape of the input tensor
     #k_model = pytorch_to_keras(model, input_var, [(10, None, None,)], verbose=True) 
