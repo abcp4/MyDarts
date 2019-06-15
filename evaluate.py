@@ -48,7 +48,7 @@ def main():
     net_crit = nn.CrossEntropyLoss().to(device)
     model = SearchCNNController(input_channels, config.init_channels, n_classes, config.layers,
                                 net_crit, device_ids=config.gpus)
-    model = model.to(device)
+    #model = model.to(device)
 
     # weights optimizer
     w_optim = torch.optim.SGD(model.weights(), config.w_lr, momentum=config.w_momentum,
@@ -93,7 +93,7 @@ def main():
     if(config.load):
         model,config.epochs,w_optim,alpha_optim,net_crit = utils.load_checkpoint(model,config.epochs,w_optim,alpha_optim,net_crit,'/content/MyDarts/searchs/custom/checkpoint.pth.tar')
     
-    model.cuda() 
+    model.eval() 
     input_np = np.random.uniform(0, 1, (1, 3,64, 64))
     input_var = Variable(torch.FloatTensor(input_np))
     from pytorch2keras.converter import pytorch_to_keras
