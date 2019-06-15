@@ -48,7 +48,7 @@ def main():
     net_crit = nn.CrossEntropyLoss().to(device)
     model = SearchCNNController(input_channels, config.init_channels, n_classes, config.layers,
                                 net_crit, device_ids=config.gpus)
-    model = model.to(device)
+    #model = model.to(device)
 
     # weights optimizer
     w_optim = torch.optim.SGD(model.weights(), config.w_lr, momentum=config.w_momentum,
