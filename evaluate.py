@@ -92,7 +92,7 @@ def main():
     #load
     if(config.load):
         model,config.epochs,w_optim,alpha_optim,net_crit = utils.load_checkpoint(model,config.epochs,w_optim,alpha_optim,net_crit,'/content/pt.darts/searchs/custom/checkpoint.pth.tar')
-        
+    model.eval() 
     input_np = np.random.uniform(0, 1, (1, 3,64, 64))
     input_var = Variable(torch.FloatTensor(input_np))
     from pytorch2keras.converter import pytorch_to_keras
