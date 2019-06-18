@@ -57,7 +57,8 @@ def main():
     net_crit = nn.CrossEntropyLoss().to(device)
     model = SearchCNNController(input_channels, config.init_channels, n_classes, config.layers,
                                 net_crit, device_ids=config.gpus)
-    #model = model.to(device)
+    #comment if generating onnix graph
+    model = model.to(device)
 
     # weights optimizer
     w_optim = torch.optim.SGD(model.weights(), config.w_lr, momentum=config.w_momentum,
@@ -101,7 +102,9 @@ def main():
     #load
     if(config.load):
         model,config.epochs,w_optim,alpha_optim,net_crit = utils.load_checkpoint(model,config.epochs,w_optim,alpha_optim,net_crit,'/content/MyDarts/searchs/custom/checkpoint.pth.tar')
-   
+    #uncomment if saving onnix graph
+    """
+    
     dummy_input = Variable(torch.randn(1, 3, 64, 64))
     #torch.onnx.export(model, dummy_input, "rsdarts.onnx", verbose=True)
     input_np = np.random.uniform(0, 1, (1, 3, 64, 64))
@@ -116,7 +119,8 @@ def main():
         max_error = error
 
     print('Max error: {0}'.format(max_error))
-    a = 2/0
+    a=2/0
+    """
     lr_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
         w_optim, config.epochs, eta_min=config.w_lr_min)
     architect = Architect(model, config.w_momentum, config.w_weight_decay)
