@@ -158,7 +158,7 @@ def main():
         
         # log
         # genotype
-        print("Model Alpha:",model.alpha_normal)
+        #print("Model Alpha:",model.alpha_normal)
         genotype = model.genotype()
         logger.info("genotype = {}".format(genotype))
 
@@ -357,7 +357,7 @@ def get_weights_from_arch(model,arch):
       alphas_normal,
       alphas_reduce,
     ]
-    print('arch parameters: ',arch_parameters)
+    #print('arch parameters: ',arch_parameters)
     return arch_parameters
 
 def set_model_weights(model, weights):
