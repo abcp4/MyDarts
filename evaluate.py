@@ -363,7 +363,7 @@ def get_weights_from_arch(model,arch):
 def set_model_weights(model, weights):
   model.alphas_normal = weights[0]
   model.alphas_reduce = weights[1]
-  print("Setting alphas normal:",model.alphas_normal)
+  #print("Setting alphas normal:",model.alphas_normal)
   model._arch_parameters = [model.alphas_normal, model.alphas_reduce]
 
 def sample_arch(model):
@@ -371,7 +371,7 @@ def sample_arch(model):
     k = sum(1 for i in range(n_nodes) for n in range(2+i))
     num_ops = len(genotypes.PRIMITIVES)
     #n_nodes = model._steps
-    print("Number of nodes:",n_nodes)
+    #print("Number of nodes:",n_nodes)
 
     normal = []
     reduction = []
@@ -381,7 +381,7 @@ def sample_arch(model):
         nodes_in_reduce = np.random.choice(range(i+2), 2, replace=False)
         normal.extend([(nodes_in_normal[0], ops[0]), (nodes_in_normal[1], ops[1])])
         reduction.extend([(nodes_in_reduce[0], ops[2]), (nodes_in_reduce[1], ops[3])])
-    print("normal:",normal)
+    #print("normal:",normal)
     return (normal, reduction)
 
 
