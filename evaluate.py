@@ -10,7 +10,7 @@ from models.search_cnn import SearchCNNController
 from architect import Architect
 from visualize import plot
 import genotypes
-
+import pickle
 from torch.autograd import Variable
 import torch.nn.functional as F
 import torch.backends.cudnn as cudnn
@@ -141,7 +141,8 @@ def main():
         print("###################TRAINING#########################")
         # training
         #sample rs arch
-        arch = sample_arch(model)
+        #arch = sample_arch(model)
+        arch = pickle.load( open( "best_arch.p", "rb" ) )
         train(train_loader, valid_loader, model, arch, w_optim, alpha_optim, lr, epoch)
         print("###################END TRAINING#########################")
         
