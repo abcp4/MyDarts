@@ -173,6 +173,7 @@ def main():
         if best_top1 < top1:
             best_top1 = top1
             best_genotype = genotype
+            best_arch = arch
             is_best = True
         else:
             is_best = False
@@ -185,6 +186,7 @@ def main():
             is_best_overall = False
         
         utils.save_checkpoint(model,epoch,w_optim,alpha_optim,net_crit, config.path, is_best,is_best_overall)
+        pickle.dump( best_arch, open( "best_arch.p", "wb" ) )
         print("saved!")
 
     logger.info("Final best Prec@1 = {:.4%}".format(best_top1))
