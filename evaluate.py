@@ -186,7 +186,9 @@ def main():
             is_best_overall = False
         
         utils.save_checkpoint(model,epoch,w_optim,alpha_optim,net_crit, config.path, is_best,is_best_overall)
+        import pickle
         pickle.dump( best_arch, open( "best_arch.p", "wb" ) )
+        print('best_arch:',best_arch)
         print("saved!")
 
     logger.info("Final best Prec@1 = {:.4%}".format(best_top1))
