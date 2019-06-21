@@ -106,7 +106,7 @@ def main():
     
     
     dummy_input = Variable(torch.randn(1, 3, 64, 64))
-    #torch.onnx.export(model, dummy_input, "rsdarts.onnx", verbose=True)
+    torch.onnx.export(model, dummy_input, "rsdarts.onnx", verbose=True)
     input_np = np.random.uniform(0, 1, (1, 3, 64, 64))
     input_var = Variable(torch.FloatTensor(input_np))
     from pytorch2keras.converter import pytorch_to_keras
