@@ -27,7 +27,7 @@ class Cutout(object):
         return img
 
 
-def data_transforms(dataset, cutout_length):
+def data_transforms(dataset, cutout_length,resize = 64):
     dataset = dataset.lower()
     if dataset == 'cifar10':
         MEAN = [0.49139968, 0.48215827, 0.44653124]
@@ -51,7 +51,7 @@ def data_transforms(dataset, cutout_length):
         ]
     elif dataset == 'custom':
         transf = [
-            transforms.Resize((64,64), interpolation=2)
+            transforms.Resize((resize,resize), interpolation=2)
             #transforms.RandomVerticalFlip()
             #transforms.ToTensor()
         ]
@@ -71,7 +71,7 @@ def data_transforms(dataset, cutout_length):
         
     #meu 
     valtransf = [
-            transforms.Resize((64,64), interpolation=2)
+            transforms.Resize((resize,resize), interpolation=2)
         ]
     
     train_transform = transforms.Compose(transf + normalize)
