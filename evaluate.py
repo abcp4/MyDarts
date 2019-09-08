@@ -155,7 +155,10 @@ def main():
         
         # test
         print("###################TEST#########################")
-        validate(test_loader, model, arch,epoch, cur_step)
+        _,_,preds,targets= validate(test_loader, model, arch,epoch, cur_step)
+        pickle.dump( [preds,targets], open( "predictions_"+str(epoch+1)+".p", "wb" ) )
+        print("predictions: ",preds)
+        print("targets:",targets)
         print("###################END TEST#########################")
         
         # log
@@ -312,6 +315,7 @@ def validate(valid_loader, model,arch, epoch, cur_step,overall = False):
             
     print(preds.shape)
     print(targets.shape)
+    
     print('np.unique(targets):',np.unique(targets))
     print('np.unique(preds): ',np.unique(preds))
     from sklearn.metrics import classification_report
@@ -334,7 +338,7 @@ def validate(valid_loader, model,arch, epoch, cur_step,overall = False):
     logger.info("Valid: [{:2d}/{}] Overall {:.4%}".format(epoch+1, config.epochs, topover))
     
     if overall:
-        return top1.avg,topover
+        return top1.avg,topover,preds,targets
     return top1.avg
 
 
