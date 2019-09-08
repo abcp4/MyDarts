@@ -51,8 +51,8 @@ def main():
     torch.backends.cudnn.benchmark = True
 
     # get data with meta info
-    input_size, input_channels, n_classes, train_data, test_dat, val_dat = utils.get_data(
-        config.dataset, config.data_path, cutout_length=0, validation=True,validation2 = True)
+    input_size, input_channels, n_classes, train_data, val_dat,test_dat = utils.get_data(
+        config.dataset, config.data_path, cutout_length=0, validation=True,validation2 = True,img_resize=config.img_resize)
 
     net_crit = nn.CrossEntropyLoss().to(device)
     model = SearchCNNController(input_channels, config.init_channels, n_classes, config.layers,
