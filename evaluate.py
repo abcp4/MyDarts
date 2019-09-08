@@ -150,7 +150,7 @@ def main():
         # validation
         cur_step = (epoch+1) * len(train_loader)
         print("###################VALID#########################")
-        top1,top_overall = validate(valid_loader, model, arch,epoch, cur_step,overall = True)
+        top1,top_overall,_,_ = validate(valid_loader, model, arch,epoch, cur_step,overall = True)
         print("###################END VALID#########################")
         
         # test
