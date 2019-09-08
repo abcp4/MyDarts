@@ -156,7 +156,9 @@ def main():
         # test
         print("###################TEST#########################")
         _,_,preds,targets= validate(test_loader, model, arch,epoch, cur_step,overall = True)
-        pickle.dump( [preds,targets], open( "predictions_"+str(epoch+1)+".p", "wb" ) )
+        s = [preds,targets]
+        import pickle
+        pickle.dump( s, open( "predictions_"+str(epoch+1)+".p", "wb" ) )
         print("predictions: ",preds)
         print("targets:",targets)
         print("###################END TEST#########################")
