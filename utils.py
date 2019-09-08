@@ -8,7 +8,7 @@ import numpy as np
 import preproc
 
 
-def get_data(dataset, data_path, cutout_length, validation,validation2 = False):
+def get_data(dataset, data_path, cutout_length, validation,validation2 = False,img_resize = 64):
     """ Get torchvision dataset """
     dataset = dataset.lower()
 
@@ -27,7 +27,7 @@ def get_data(dataset, data_path, cutout_length, validation,validation2 = False):
     else:
         raise ValueError(dataset)
 
-    trn_transform, val_transform = preproc.data_transforms(dataset, cutout_length)
+    trn_transform, val_transform = preproc.data_transforms(dataset, cutout_length,img_resize)
     if dataset == 'custom':
         trn_data = dset_cls(root=data_path, transform=trn_transform)
         #dataset_loader = torch.utils.data.DataLoader(trn_data,
@@ -39,7 +39,7 @@ def get_data(dataset, data_path, cutout_length, validation,validation2 = False):
 
     # assuming shape is NHW or NHWC
     if dataset == 'custom':
-        shape = [1, 64, 64,3]
+        shape = [1, img_resize, img_resize,3]
     else:
         shape = trn_data.train_data.shape
     print(shape)
@@ -52,13 +52,13 @@ def get_data(dataset, data_path, cutout_length, validation,validation2 = False):
         
     if validation: # append validation data
         if dataset == 'custom':
-            dset_cls = dset.ImageFolder('/content/data/test',transform=val_transform)
+            dset_cls = dset.ImageFolder('/content/data/valid',transform=val_transform)
             ret.append(dset_cls)
         else:
             ret.append(dset_cls(root=data_path, train=False, download=True, transform=val_transform))
     if validation2:
         if dataset == 'custom':
-            dset_cls = dset.ImageFolder('/content/data/valid',transform=trn_transform)
+            dset_cls = dset.ImageFolder('/content/data/test',transform=trn_transform)
             ret.append(dset_cls)
     return ret
 
