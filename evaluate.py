@@ -218,7 +218,7 @@ def train(train_loader, valid_loader, model, arch, w_optim, alpha_optim, lr, epo
 
     model.train()
 
-    for step, ((trn_X, trn_y), (val_X, val_y)) in enumerate(zip(train_loader, valid_loader)):
+    for step, ((trn_X, trn_y), (val_X, val_y,z)) in enumerate(zip(train_loader, valid_loader)):
         trn_X, trn_y = trn_X.to(device, non_blocking=True), trn_y.to(device, non_blocking=True)
         val_X, val_y = val_X.to(device, non_blocking=True), val_y.to(device, non_blocking=True)
         N = trn_X.size(0)
