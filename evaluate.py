@@ -155,12 +155,12 @@ def main():
         
         # test
         print("###################TEST#########################")
-        _,_,preds,targets= validate(test_loader, model, arch,epoch, cur_step,overall = True)
+        _,_,preds,targets= validate(test_loader, model, arch,epoch, cur_step,overall = True,debug=True)
         s = [preds,targets]
         import pickle
         pickle.dump( s, open( "predictions_"+str(epoch+1)+".p", "wb" ) )
-        print("predictions: ",preds)
-        print("targets:",targets)
+        #print("predictions: ",preds)
+        #print("targets:",targets)
         print("###################END TEST#########################")
         
         # log
