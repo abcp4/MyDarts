@@ -257,7 +257,7 @@ def train(train_loader, valid_loader, model, arch, w_optim, alpha_optim, lr, epo
     logger.info("Train: [{:2d}/{}] Final Prec@1 {:.4%}".format(epoch+1, config.epochs, top1.avg))
 
 
-def validate(valid_loader, model,arch, epoch, cur_step,overall = False):
+def validate(valid_loader, model,arch, epoch, cur_step,overall = False,debug = False):
     top1 = utils.AverageMeter()
     top5 = utils.AverageMeter()
     losses = utils.AverageMeter()
@@ -267,8 +267,9 @@ def validate(valid_loader, model,arch, epoch, cur_step,overall = False):
     import numpy as np
     preds = np.asarray([])
     targets = np.asarray([])
+    names = []
     with torch.no_grad():
-        for step, (X, y) in enumerate(valid_loader):
+        for step, (X, y,z) in enumerate(valid_loader):
             X, y = X.to(device, non_blocking=True), y.to(device, non_blocking=True)
             N = X.size(0)
 
@@ -285,6 +286,7 @@ def validate(valid_loader, model,arch, epoch, cur_step,overall = False):
             #minha alteracao
             preds = np.concatenate((preds,predicted.cpu().numpy().ravel()))
             targets = np.concatenate((targets,target.cpu().numpy().ravel()))
+            names.append(z)
             
             ###TOP 5 NAO EXISTE NAS MAAMAS OU NO GEO. TEM QUE TRATAR
             maxk = 3 # Ignorando completamente o top5
@@ -314,9 +316,10 @@ def validate(valid_loader, model,arch, epoch, cur_step,overall = False):
                     "Prec@(1,5) ({top1.avg:.1%}, {top5.avg:.1%})".format(
                         epoch+1, config.epochs, step, len(valid_loader)-1, losses=losses,
                         top1=top1, top5=top5))
-            
-    print(preds.shape)
-    print(targets.shape)
+    if(debug):        
+        print(preds)
+        print(targets)
+        print(names)
     
     print('np.unique(targets):',np.unique(targets))
     print('np.unique(preds): ',np.unique(preds))
