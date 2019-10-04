@@ -200,7 +200,8 @@ def validate(valid_loader, model, criterion,epoch, cur_step,overall = False):
             topk = (1,3)
             maxk = max(topk)
             batch_size = target.size(0)
-            _, predicted = torch.max(output.data, 1)
+            #_, predicted = torch.max(output.data, 1)
+            predicted = output.data
             #minha alteracao
             preds = np.concatenate((preds,predicted.cpu().numpy().ravel()))
             targets = np.concatenate((targets,target.cpu().numpy().ravel()))
@@ -233,6 +234,13 @@ def validate(valid_loader, model, criterion,epoch, cur_step,overall = False):
                     "Prec@(1,5) ({top1.avg:.1%}, {top5.avg:.1%})".format(
                         epoch+1, config.epochs, step, len(valid_loader)-1, losses=losses,
                         top1=top1, top5=top5))
+                
+    import sys
+    import numpy
+    numpy.set_printoptions(threshold=sys.maxsize)
+    print(preds)
+    print(targets)
+    print(names)
             
     print(preds.shape)
     print(targets.shape)
