@@ -360,7 +360,7 @@ def validate(valid_loader, model,arch, epoch, cur_step,overall = False,debug = F
     if overall:
         return top1.avg,topover,preds,targets
     return top1.avg
-
+ 
 
 
 def get_weights_from_arch(model,arch):
