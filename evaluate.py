@@ -265,6 +265,7 @@ def validate(valid_loader, model,arch, epoch, cur_step,overall = False,debug = F
     set_model_weights(model,weights)
     model.eval()
     import numpy as np
+    logits_pred = np.asarray([])
     preds = np.asarray([])
     targets = np.asarray([])
     names = []
@@ -286,6 +287,7 @@ def validate(valid_loader, model,arch, epoch, cur_step,overall = False,debug = F
             #minha alteracao
             preds = np.concatenate((preds,predicted.cpu().numpy().ravel()))
             targets = np.concatenate((targets,target.cpu().numpy().ravel()))
+            logits_pred  = np.concatenate((logits_pred,output.data.cpu().numpy().ravel()))
             names.append(z)
             
             ###TOP 5 NAO EXISTE NAS MAAMAS OU NO GEO. TEM QUE TRATAR
@@ -328,7 +330,8 @@ def validate(valid_loader, model,arch, epoch, cur_step,overall = False,debug = F
     print('np.unique(preds): ',np.unique(preds))
     from sklearn.metrics import classification_report
     from sklearn.metrics import accuracy_score
-    print(accuracy_score(targets, preds))
+    acc = accuracy_score(targets, preds)
+    print(acc)
     cr = classification_report(targets, preds,output_dict= True)
     a1,a2,a3 = cr['macro avg']['f1-score'] ,cr['macro avg']['precision'],cr['macro avg']['recall'] 
     topover = (a1+a2+a3)/3 
@@ -336,7 +339,16 @@ def validate(valid_loader, model,arch, epoch, cur_step,overall = False,debug = F
     from sklearn.metrics import balanced_accuracy_score
     from sklearn.metrics import accuracy_score
     print(balanced_accuracy_score(targets, preds))
-    print(accuracy_score(targets, preds))
+    
+    log_score = open("log_score.txt","a")
+    log_score.write('logits: '+str(logits_pred) + "\n")
+    log_score.write('names: '+str(names) + "\n")
+    log_score.write('accuracy:'+str(acc)+'\n')
+    log_score.write('report: '+str(cr)+'\n')
+    log_score.close()
+    print("SAVED!!")
+    
+    
     from sklearn.metrics import confusion_matrix
     matrix = confusion_matrix(targets, preds)
     print(matrix.diagonal()/matrix.sum(axis=1))
