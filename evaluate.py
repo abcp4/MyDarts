@@ -287,7 +287,7 @@ def validate(valid_loader, model,arch, epoch, cur_step,overall = False,debug = F
             #minha alteracao
             preds = np.concatenate((preds,predicted.cpu().numpy().ravel()))
             targets = np.concatenate((targets,target.cpu().numpy().ravel()))
-            logits_pred.append(output.data.cpu().numpy().ravel())
+            logits_pred.append(output.data.cpu().numpy())
             names.append(z)
             
             ###TOP 5 NAO EXISTE NAS MAAMAS OU NO GEO. TEM QUE TRATAR
