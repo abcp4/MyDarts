@@ -287,7 +287,7 @@ def validate(valid_loader, model,arch, epoch, cur_step,overall = False,debug = F
             #minha alteracao
             preds = np.concatenate((preds,predicted.cpu().numpy().ravel()))
             targets = np.concatenate((targets,target.cpu().numpy().ravel()))
-            logits_pred  = np.concatenate((logits_pred,output.data.cpu().numpy().ravel()))
+            logits_pred  = np.concatenate((logits_pred,output.data.cpu().numpy()))
             names.append(z)
             
             ###TOP 5 NAO EXISTE NAS MAAMAS OU NO GEO. TEM QUE TRATAR
@@ -318,13 +318,13 @@ def validate(valid_loader, model,arch, epoch, cur_step,overall = False,debug = F
                     "Prec@(1,5) ({top1.avg:.1%}, {top5.avg:.1%})".format(
                         epoch+1, config.epochs, step, len(valid_loader)-1, losses=losses,
                         top1=top1, top5=top5))
-    if(debug): 
-        import sys
-        import numpy
-        numpy.set_printoptions(threshold=sys.maxsize)
-        print(preds)
-        print(targets)
-        print(names)
+    #if(debug): 
+    #    import sys
+    #    import numpy
+    #    numpy.set_printoptions(threshold=sys.maxsize)
+    #    print(preds)
+    #    print(targets)
+    #    print(names)
     
     print('np.unique(targets):',np.unique(targets))
     print('np.unique(preds): ',np.unique(preds))
