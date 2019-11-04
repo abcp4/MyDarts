@@ -108,12 +108,13 @@ def main():
     best_top1 = 0.
     # training loop
     for epoch in range(config.epochs):
-        lr_scheduler.step()
+        #lr_scheduler.step() Comment for bug
+        
         drop_prob = config.drop_path_prob * epoch / config.epochs
         model.module.drop_path_prob(drop_prob)
 
         # training
-        train(train_loader, model, optimizer, criterion, epoch)
+        train(train_loader, model, optimizer, criterion, epoch, lr_scheduler)
 
         # validation
         cur_step = (epoch+1) * len(train_loader)
@@ -132,7 +133,7 @@ def main():
     logger.info("Final best Prec@1 = {:.4%}".format(best_top1))
 
 
-def train(train_loader, model, optimizer, criterion, epoch):
+def train(train_loader, model, optimizer, criterion, epoch, lr_scheduler):
     top1 = utils.AverageMeter()
     top5 = utils.AverageMeter()
     losses = utils.AverageMeter()
@@ -157,6 +158,7 @@ def train(train_loader, model, optimizer, criterion, epoch):
         # gradient clipping
         nn.utils.clip_grad_norm_(model.parameters(), config.grad_clip)
         optimizer.step()
+        lr_scheduler.step()#FIX pytorch 1.1.0 "https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate"
 
         prec1, prec5 = utils.accuracy(logits, y, topk=(1, 5))
         losses.update(loss.item(), N)
