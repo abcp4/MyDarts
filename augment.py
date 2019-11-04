@@ -247,6 +247,9 @@ def validate(valid_loader, model, criterion,epoch, cur_step,overall = False):
     print(preds)
     print(targets)
     print(names)
+    print(len(preds))
+    print(len(targets))
+    print(len(names))
             
     print('np.unique(targets):',np.unique(targets))
     print('np.unique(preds): ',np.unique(preds))
