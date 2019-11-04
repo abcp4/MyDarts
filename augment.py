@@ -244,9 +244,9 @@ def validate(valid_loader, model, criterion,epoch, cur_step,overall = False):
     import sys
     import numpy
     #numpy.set_printoptions(threshold=sys.maxsize)
-    #print(preds)
-    #print(targets)
-    #print(names)
+    print(preds)
+    print(targets)
+    print(names)
             
     print('np.unique(targets):',np.unique(targets))
     print('np.unique(preds): ',np.unique(preds))
