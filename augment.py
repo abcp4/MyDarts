@@ -186,8 +186,9 @@ def validate(valid_loader, model, criterion,epoch, cur_step,overall = False):
     import numpy as np
     preds = np.asarray([])
     targets = np.asarray([])
+    logits_pred = []
     with torch.no_grad():
-        for step, (X, y) in enumerate(valid_loader):
+        for step, (X, y, z) in enumerate(valid_loader):
             X, y = X.to(device, non_blocking=True), y.to(device, non_blocking=True)
             N = X.size(0)
 
@@ -205,6 +206,8 @@ def validate(valid_loader, model, criterion,epoch, cur_step,overall = False):
             #minha alteracao
             preds = np.concatenate((preds,predicted.cpu().numpy().ravel()))
             targets = np.concatenate((targets,target.cpu().numpy().ravel()))
+            names.append(z)
+            logits_pred.append(output.data.cpu().numpy())
             
             ###TOP 5 NAO EXISTE NAS MAAMAS OU NO GEO. TEM QUE TRATAR
             maxk = 3 # Ignorando completamente o top5
@@ -237,18 +240,17 @@ def validate(valid_loader, model, criterion,epoch, cur_step,overall = False):
                 
     import sys
     import numpy
-    numpy.set_printoptions(threshold=sys.maxsize)
-    print(preds)
-    print(targets)
-    print(names)
+    #numpy.set_printoptions(threshold=sys.maxsize)
+    #print(preds)
+    #print(targets)
+    #print(names)
             
-    print(preds.shape)
-    print(targets.shape)
     print('np.unique(targets):',np.unique(targets))
     print('np.unique(preds): ',np.unique(preds))
     from sklearn.metrics import classification_report
     from sklearn.metrics import accuracy_score
-    print(accuracy_score(targets, preds))
+    acc = accuracy_score(targets, preds)
+    print(acc)
     cr = classification_report(targets, preds,output_dict= True)
     a1,a2,a3 = cr['macro avg']['f1-score'] ,cr['macro avg']['precision'],cr['macro avg']['recall'] 
     topover = (a1+a2+a3)/3 
@@ -256,12 +258,20 @@ def validate(valid_loader, model, criterion,epoch, cur_step,overall = False):
     from sklearn.metrics import balanced_accuracy_score
     from sklearn.metrics import accuracy_score
     print(balanced_accuracy_score(targets, preds))
-    print(accuracy_score(targets, preds))
+    
+    log_score = open("log_score.txt","a")
+    log_score.write('logits: '+str(logits_pred) + "\n")
+    log_score.write('names: '+str(names) + "\n")
+    log_score.write('accuracy:'+str(acc)+'\n')
+    log_score.write('report: '+str(cr)+'\n')
+    log_score.close()
+    print("SAVED!!")
+    
+    
     from sklearn.metrics import confusion_matrix
     matrix = confusion_matrix(targets, preds)
     print(matrix.diagonal()/matrix.sum(axis=1))
     print(matrix)
-
     logger.info("Valid: [{:2d}/{}] Final Prec@1 {:.4%}".format(epoch+1, config.epochs, top1.avg))
     logger.info("Valid: [{:2d}/{}] Overall {:.4%}".format(epoch+1, config.epochs, topover))
     
