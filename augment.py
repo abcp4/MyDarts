@@ -189,6 +189,7 @@ def validate(valid_loader, model, criterion,epoch, cur_step,overall = False):
     preds = np.asarray([])
     targets = np.asarray([])
     logits_pred = []
+    names = []
     with torch.no_grad():
         for step, (X, y, z) in enumerate(valid_loader):
             X, y = X.to(device, non_blocking=True), y.to(device, non_blocking=True)
