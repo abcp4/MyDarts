@@ -128,6 +128,9 @@ def main():
             is_best = False
         #utils.save_checkpoint(model, config.path, is_best)
         utils.save_checkpoint2(model,epoch,optimizer,criterion, config.path, is_best)
+        
+        #test
+        top1 = validate(test_loader, model, criterion, epoch, cur_step)
         print("")
 
     logger.info("Final best Prec@1 = {:.4%}".format(best_top1))
