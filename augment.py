@@ -276,7 +276,7 @@ def validate(valid_loader, model, criterion,epoch, cur_step,overall = False):
     log_score.write('report: '+str(cr)+'\n')
     log_score.close()
     import pickle
-	pickle.dump([names,logits_pred,acc],open('data.p','wb'))
+    pickle.dump([names,logits_pred,acc],open('data.p','wb'))
 					
     print("SAVED!!")
     
