@@ -43,7 +43,7 @@ class SearchConfig(BaseConfig):
         parser = get_parser("Search config")
         parser.add_argument('--name', required=True)
         parser.add_argument('--load', type=bool, default=False)
-        parser.add_argument('--dataset', required=True, help='CIFAR10 / MNIST / FashionMNIST')
+        parser.add_argument('--dataset', required=True, help='CIFAR10 / MNIST / FashionMNIST / Sleep')
         parser.add_argument('--data_path', type=str, default='./data/')
         parser.add_argument('--batch_size', type=int, default=64, help='batch size')
         parser.add_argument('--img_resize', type=int, default=64, help='image resize')
@@ -84,7 +84,7 @@ class AugmentConfig(BaseConfig):
     def build_parser(self):
         parser = get_parser("Augment config")
         parser.add_argument('--name', required=True)
-        parser.add_argument('--dataset', required=True, help='CIFAR10 / MNIST / FashionMNIST')
+        parser.add_argument('--dataset', required=True, help='CIFAR10 / MNIST / FashionMNIST / Sleep')
         parser.add_argument('--data_path', type=str, default='./data/')
         parser.add_argument('--batch_size', type=int, default=96, help='batch size')
         parser.add_argument('--lr', type=float, default=0.025, help='lr for weights')
